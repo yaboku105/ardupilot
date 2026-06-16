@@ -1,0 +1,9 @@
+def build(bld):
+    bld.stlib(
+        name='AP_AI_Track',
+        source=bld.path.ant_glob('*.cpp'),
+        includes=[
+            bld.path.parent_node.parent_node.abspath(),
+        ],
+        use=['AP_Mount', 'AP_AHRS', 'AP_Logger', 'AP_Param']
+    )
