@@ -1,0 +1,10 @@
+def build(bld):
+    bld.ap_library(
+        'AP_AI_Track',
+        sources=[
+            'AP_AI_Track.cpp'
+        ],
+        includes=[
+            '.'
+        ]
+    )

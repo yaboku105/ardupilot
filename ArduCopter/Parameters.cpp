@@ -2,7 +2,7 @@
 
 #include <AP_Gripper/AP_Gripper.h>
 #include <AP_InertialSensor/AP_InertialSensor_rate_config.h>
-
+#include <AP_AI_Track/AP_AI_Track.h> 
 /*
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@ const AP_Param::Info Copter::var_info[] = {
     // @Description: This value is incremented when changes are made to the eeprom format
     // @User: Advanced
     GSCALAR(format_version, "FORMAT_VERSION",   0),
-
+   
     // SYSID_THISMAV was here
 
     // SYSID_MYGCS was here
@@ -589,6 +589,10 @@ const AP_Param::Info Copter::var_info[] = {
     // @Path: ../libraries/GCS_MAVLink/GCS.cpp
     GOBJECT(_gcs,           "MAV",  GCS),
 #endif
+// @Group: AITR_
+// @Path: ../libraries/AP_AI_Track/AP_AI_Track.cpp
+
+     GOBJECT(ai_track, "AI_", AP_AI_Track),
 
     AP_VAREND
 };
@@ -1007,7 +1011,8 @@ const AP_Param::GroupInfo ParametersG2::var_info[] = {
 
     // ID 62 is reserved for the SHOW_... parameters from the Skybrush fork at
     // https://github.com/skybrush-io/ardupilot
-
+    //AI_TRCK PAREAM
+  
     AP_GROUPEND
 };
 

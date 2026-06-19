@@ -72,7 +72,7 @@
 #include <AP_OpticalFlow/AP_OpticalFlow.h>
 #include <AP_Winch/AP_Winch_config.h>
 #include <AP_SurfaceDistance/AP_SurfaceDistance.h>
-
+#include <AP_AI_Track/AP_AI_Track.h>
 // Configuration
 #include "defines.h"
 #include "config.h"
@@ -186,7 +186,8 @@ public:
     friend class Parameters;
     friend class ParametersG2;
     friend class AP_Avoidance_Copter;
-
+    AP_AI_Track ai_track;
+    void ai_track_update();
 #if AP_COPTER_ADVANCED_FAILSAFE_ENABLED
     friend class AP_AdvancedFailsafe_Copter;
 #endif

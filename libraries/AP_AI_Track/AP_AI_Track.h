@@ -16,11 +16,14 @@ class AP_Vehicle;
 
 class AP_AI_Track {
 public:
+    friend class Parameters;
+    friend class ParametersG2;
+    
     AP_AI_Track();
 
     /* Singleton accessor */
     static AP_AI_Track *get_singleton();
-
+    bool enabled() const { return _enable.get() > 0; }
     /* Main update function - call at 50Hz */
     void update();
 
@@ -117,12 +120,13 @@ private:
     AP_Float _velocity_gain;      // Gain for velocity control
     AP_Float _max_speed;          // Maximum follow speed
     AP_Float _min_distance;       // Minimum distance before stopping follow
-
+    AP_Int8 _enable;
     // References to ArduPilot libraries
     AP_AHRS *_ahrs;
     AP_Mount *_mount;
     AP_Vehicle *_vehicle;
-
+  
     // Singleton
     static AP_AI_Track *_singleton;
+    
 };
