@@ -29,7 +29,7 @@ public:
     // by newer code.
     //
     static const uint16_t        k_format_version = 120;
-
+    AP_Int8 ai_track_enable;
     // Parameter identities.
     //
     // The enumeration defined here is used to ensure that every parameter
@@ -62,10 +62,11 @@ public:
         k_param_NavEKF3,
         k_param_can_mgr,
         k_param_osd,
-
         // simulation
         k_param_sitl = 10,
+        //AI TRACK
 
+       
         // barometer object (needed for SITL)
         k_param_barometer,
 
@@ -390,6 +391,8 @@ public:
 
         // the k_param_* space is 9-bits in size
         // 511: reserved
+        // AI Track
+        k_param_ai_track,
     };
 
     AP_Int16        format_version;

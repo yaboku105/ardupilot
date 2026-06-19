@@ -76,13 +76,12 @@
 
 #include "Copter.h"
 #include <AP_InertialSensor/AP_InertialSensor_rate_config.h>
-
+#include <AP_AI_Track/AP_AI_Track.h>
 #define FORCE_VERSION_H_INCLUDE
 #include "version.h"
 #undef FORCE_VERSION_H_INCLUDE
 
 const AP_HAL::HAL& hal = AP_HAL::get_HAL();
-
 #define SCHED_TASK(func, rate_hz, _max_time_micros, _prio) SCHED_TASK_CLASS(Copter, &copter, func, rate_hz, _max_time_micros, _prio)
 #define FAST_TASK(func) FAST_TASK_CLASS(Copter, &copter, func)
 
@@ -262,6 +261,8 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
     // don't delete this, there is an equivalent (virtual) in AP_Vehicle for the non-rate loop case
     SCHED_TASK(update_dynamic_notch_at_specified_rate_main,                       LOOP_RATE, 200, 215),
 #endif
+SCHED_TASK(ai_track_update, 50, 50, 50)
+
 };
 
 void Copter::get_scheduler_tasks(const AP_Scheduler::Task *&tasks,
@@ -981,6 +982,13 @@ bool Copter::get_rate_ef_targets(Vector3f& rate_ef_targets_rads) const
         rate_ef_targets_rads = attitude_control->get_rate_ef_target_rads();
     }
     return true;
+}
+void Copter::ai_track_update()
+{ if (!ai_track.enabled()) {
+        return;
+    }
+
+    ai_track.update();
 }
 
 /*
