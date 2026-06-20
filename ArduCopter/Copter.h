@@ -186,8 +186,8 @@ public:
     friend class Parameters;
     friend class ParametersG2;
     friend class AP_Avoidance_Copter;
-    AP_AI_Track ai_track;
-    void ai_track_update();
+   
+    
 #if AP_COPTER_ADVANCED_FAILSAFE_ENABLED
     friend class AP_AdvancedFailsafe_Copter;
 #endif
@@ -234,6 +234,15 @@ public:
     friend class PayloadPlace;
 
     Copter(void);
+    // ========== AI TRACKING (PUBLIC) ==========
+    // These are called from outside (main loop, GCS, etc.)
+    AP_AI_Track ai_track;                    // Public access needed
+    void ai_track_update();                  // Called from scheduler
+    void ai_track_set_target(const Vector3f &target_pos);  // Called from GCS
+    void ai_track_set_enabled(bool enabled); // Called from GCS
+    void ai_track_reset();                   // Called from GCS
+    bool ai_track_is_active() const;         // Called from GCS
+    Vector3f ai_track_get_target() const;    // Called from GCS
 
 private:
 
@@ -563,7 +572,8 @@ private:
     // Top-level logic
     // setup the var_info table
     AP_Param param_loader;
-
+    // ========== AI TRACK FUNCTION DECLARATIONS ==========
+   
 #if FRAME_CONFIG == HELI_FRAME
     // Tradheli flags
     typedef struct {

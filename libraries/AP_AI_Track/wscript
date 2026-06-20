@@ -1,10 +1,9 @@
 def build(bld):
-    bld.ap_library(
-        'AP_AI_Track',
-        sources=[
-            'AP_AI_Track.cpp'
+    bld.ap_stlib(
+        name='AP_AI_Track',
+        source=[
+            'AP_AI_Track.cpp',
         ],
-        includes=[
-            '.'
-        ]
+        includes=['.'],
+        use=['AP_Param', 'AP_AHRS', 'AP_Math', 'AP_Mount', 'AP_Logger', 'AC_AttitudeControl'],
     )

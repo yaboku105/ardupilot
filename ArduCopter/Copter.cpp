@@ -14,66 +14,67 @@
  */
 
 /*
- *  ArduCopter (also known as APM, APM:Copter or just Copter)
- *  Wiki:           copter.ardupilot.org
- *  Creator:        Jason Short
- *  Lead Developer: Randy Mackay
- *  Lead Tester:    Marco Robustini
- *  Based on code and ideas from the Arducopter team: Leonard Hall, Andrew Tridgell, Robert Lefebvre, Pat Hickey, Michael Oborne, Jani Hirvinen,
+ * ArduCopter (also known as APM, APM:Copter or just Copter)
+ * Wiki:           copter.ardupilot.org
+ * Creator:        Jason Short
+ * Lead Developer: Randy Mackay
+ * Lead Tester:    Marco Robustini
+ * Based on code and ideas from the Arducopter team: Leonard Hall, Andrew Tridgell, Robert Lefebvre, Pat Hickey, Michael Oborne, Jani Hirvinen,
                                                       Olivier Adler, Kevin Hester, Arthur Benemann, Jonathan Challinger, John Arne Birkeland,
                                                       Jean-Louis Naudin, Mike Smith, and more
- *  Thanks to: Chris Anderson, Jordi Munoz, Jason Short, Doug Weibel, Jose Julio
+ * Thanks to: Chris Anderson, Jordi Munoz, Jason Short, Doug Weibel, Jose Julio
  *
- *  Special Thanks to contributors (in alphabetical order by first name):
+ * Special Thanks to contributors (in alphabetical order by first name):
  *
- *  Adam M Rivera       :Auto Compass Declination
- *  Amilcar Lucas       :Camera mount library
- *  Andrew Tridgell     :General development, Mavlink Support
- *  Andy Piper          :Harmonic notch, In-flight FFT, Bi-directional DShot, various drivers
- *  Angel Fernandez     :Alpha testing
- *  AndreasAntonopoulous:GeoFence
- *  Arthur Benemann     :DroidPlanner GCS
- *  Benjamin Pelletier  :Libraries
- *  Bill King           :Single Copter
- *  Christof Schmid     :Alpha testing
- *  Craig Elder         :Release Management, Support
- *  Dani Saez           :V Octo Support
- *  Doug Weibel         :DCM, Libraries, Control law advice
- *  Emile Castelnuovo   :VRBrain port, bug fixes
- *  Gregory Fletcher    :Camera mount orientation math
- *  Guntars             :Arming safety suggestion
- *  HappyKillmore       :Mavlink GCS
- *  Hein Hollander      :Octo Support, Heli Testing
- *  Igor van Airde      :Control Law optimization
- *  Jack Dunkle         :Alpha testing
- *  James Goppert       :Mavlink Support
- *  Jani Hiriven        :Testing feedback
- *  Jean-Louis Naudin   :Auto Landing
- *  John Arne Birkeland :PPM Encoder
- *  Jose Julio          :Stabilization Control laws, MPU6k driver
- *  Julien Dubois       :PosHold flight mode
- *  Julian Oes          :Pixhawk
- *  Jonathan Challinger :Inertial Navigation, CompassMot, Spin-When-Armed
- *  Kevin Hester        :Andropilot GCS
- *  Max Levine          :Tri Support, Graphics
- *  Leonard Hall        :Flight Dynamics, Throttle, Loiter and Navigation Controllers
- *  Marco Robustini     :Lead tester
- *  Michael Oborne      :Mission Planner GCS
- *  Mike Smith          :Pixhawk driver, coding support
- *  Olivier Adler       :PPM Encoder, piezo buzzer
- *  Pat Hickey          :Hardware Abstraction Layer (HAL)
- *  Robert Lefebvre     :Heli Support, Copter LEDs
- *  Roberto Navoni      :Library testing, Porting to VRBrain
- *  Sandro Benigno      :Camera support, MinimOSD
- *  Sandro Tognana      :PosHold flight mode
- *  Sebastian Quilter   :SmartRTL
- *  ..and many more.
+ * Adam M Rivera       :Auto Compass Declination
+ * Amilcar Lucas       :Camera mount library
+ * Andrew Tridgell     :General development, Mavlink Support
+ * Andy Piper          :Harmonic notch, In-flight FFT, Bi-directional DShot, various drivers
+ * Angel Fernandez     :Alpha testing
+ * AndreasAntonopoulous:GeoFence
+ * Arthur Benemann     :DroidPlanner GCS
+ * Benjamin Pelletier  :Libraries
+ * Bill King           :Single Copter
+ * Christof Schmid     :Alpha testing
+ * Craig Elder         :Release Management, Support
+ * Dani Saez           :V Octo Support
+ * Doug Weibel         :DCM, Libraries, Control law advice
+ * Emile Castelnuovo   :VRBrain port, bug fixes
+ * Gregory Fletcher    :Camera mount orientation math
+ * Guntars             :Arming safety suggestion
+ * HappyKillmore       :Mavlink GCS
+ * Hein Hollander      :Octo Support, Heli Testing
+ * Igor van Airde      :Control Law optimization
+ * Jack Dunkle         :Alpha testing
+ * James Goppert       :Mavlink Support
+ * Jani Hiriven        :Testing feedback
+ * Jean-Louis Naudin   :Auto Landing
+ * John Arne Birkeland :PPM Encoder
+ * Jose Julio          :Stabilization Control laws, MPU6k driver
+ * Julien Dubois       :PosHold flight mode
+ * Julian Oes          :Pixhawk
+ * Jonathan Challinger :Inertial Navigation, CompassMot, Spin-When-Armed
+ * Kevin Hester        :Andropilot GCS
+ * Max Levine          :Tri Support, Graphics
+ * Leonard Hall        :Flight Dynamics, Throttle, Loiter and Navigation Controllers
+ * Marco Robustini     :Lead tester
+ * Michael Oborne      :Mission Planner GCS
+ * Mike Smith          :Pixhawk driver, coding support
+ * Olivier Adler       :PPM Encoder, piezo buzzer
+ * Pat Hickey          :Hardware Abstraction Layer (HAL)
+ * Robert Lefebvre     :Heli Support, Copter LEDs
+ * Roberto Navoni      :Library testing, Porting to VRBrain
+ * Sandro Benigno      :Camera support, MinimOSD
+ * Sandro Tognana      :PosHold flight mode
+ * Sebastian Quilter   :SmartRTL
+ * ..and many more.
  *
- *  Code commit statistics can be found here: https://github.com/ArduPilot/ardupilot/graphs/contributors
- *  Wiki: https://copter.ardupilot.org/
+ * Code commit statistics can be found here: https://github.com/ArduPilot/ardupilot/graphs/contributors
+ * Wiki: https://copter.ardupilot.org/
  *
  */
-
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wreorder"
 #include "Copter.h"
 #include <AP_InertialSensor/AP_InertialSensor_rate_config.h>
 #include <AP_AI_Track/AP_AI_Track.h>
@@ -187,6 +188,10 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
 #if AP_SERVORELAYEVENTS_ENABLED
     SCHED_TASK_CLASS(AP_ServoRelayEvents,  &copter.ServoRelayEvents,      update_events, 50,  75,  60),
 #endif
+
+    // [FIX 1] Moved AI Track update here to run at Priority 65
+    SCHED_TASK(ai_track_update,          50,    500,  65),
+
 #if AC_PRECLAND_ENABLED
     SCHED_TASK(update_precland,      400,     50,  69),
 #endif
@@ -261,8 +266,6 @@ const AP_Scheduler::Task Copter::scheduler_tasks[] = {
     // don't delete this, there is an equivalent (virtual) in AP_Vehicle for the non-rate loop case
     SCHED_TASK(update_dynamic_notch_at_specified_rate_main,                       LOOP_RATE, 200, 215),
 #endif
-SCHED_TASK(ai_track_update, 50, 50, 50)
-
 };
 
 void Copter::get_scheduler_tasks(const AP_Scheduler::Task *&tasks,
@@ -983,14 +986,42 @@ bool Copter::get_rate_ef_targets(Vector3f& rate_ef_targets_rads) const
     }
     return true;
 }
+//AI LOGIC
 void Copter::ai_track_update()
-{ if (!ai_track.enabled()) {
-        return;
-    }
-
+{
     ai_track.update();
 }
 
+void Copter::ai_track_set_target(const Vector3f &target_pos)
+{
+    ai_track.set_target_position(target_pos);
+}
+
+void Copter::ai_track_set_enabled(bool enabled)
+{
+    ai_track.set_enabled(enabled);
+    if (enabled) {
+        gcs().send_text(MAV_SEVERITY_INFO, "AI Track: Enabled");
+    } else {
+        gcs().send_text(MAV_SEVERITY_INFO, "AI Track: Disabled");
+    }
+}
+
+void Copter::ai_track_reset()
+{
+    ai_track.reset();
+    gcs().send_text(MAV_SEVERITY_INFO, "AI Track: Reset");
+}
+
+bool Copter::ai_track_is_active() const
+{
+    return ai_track.is_tracking();
+}
+
+Vector3f Copter::ai_track_get_target() const
+{
+    return ai_track.get_target_position();
+}
 /*
   constructor for main Copter class
  */
@@ -1004,6 +1035,7 @@ Copter::Copter(void)
     land_accel_ef_filter(LAND_DETECTOR_ACCEL_LPF_CUTOFF),
     rc_throttle_control_in_filter(1.0f),
     param_loader(var_info)
+    // [FIX 2] Removed ai_track() from here to clear -Wreorder warning
 {
 }
 
@@ -1011,3 +1043,4 @@ Copter copter;
 AP_Vehicle& vehicle = copter;
 
 AP_HAL_MAIN_CALLBACKS(&copter);
+
